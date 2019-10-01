@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Save Open Tabs",
-  "version": "1.0",
-  "description": "Adds a red border to all webpages matching mozilla.org.",
+  "version": "1.0.0",
+  "description": "A firefox extension to save all open tabs",
   "icons": {
     "32": "icons/icon32.png",
     "48": "icons/icon48.png",
@@ -16,7 +16,6 @@
 	},
 	"permissions": [
 		"tabs",
-    "activeTab",
     "storage"
 	]
 }
