@@ -18,9 +18,16 @@ const displayList = () => {
 	browser.storage.local.get('savedTabs')
 		.then(({ savedTabs }) => {
 			savedTabs.forEach(({ title, url }) => {
-				const link = document.createElement('li')
-				link.innerHTML = `<a href="${url}">${title}</a>`
-				list.append(link)
+				const item = document.createElement('li')
+				const a = document.createElement('a')
+				a.href = url
+				a.title = url
+				
+				const linkText = document.createTextNode(title)
+				a.appendChild(linkText)
+
+				item.appendChild(a)
+				list.append(item)
 			})
 		})
 		.catch(err => {
