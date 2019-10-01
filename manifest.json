@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+  "name": "Save Open Tabs",
+  "version": "1.0",
+  "description": "Adds a red border to all webpages matching mozilla.org.",
+  "icons": {
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+		"96": "icons/icon96.png",
+		"128": "icons/icon96.png"
+  },
+  "browser_action": {
+    "default_icon": "icons/icon32.png",
+    "default_title": "Save Open Tabs",
+    "default_popup": "popup/index.html"
+	},
+	"permissions": [
+		"tabs",
+    "activeTab",
+    "storage"
+	]
+}

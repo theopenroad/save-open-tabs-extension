@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<style>
+		body {
+			background-color: white;
+			min-width: 300px;
+		}
+		button {
+			padding: 4px 8px;
+			cursor: pointer;
+		}
+		#ar {
+			text-align: right;
+		}
+		#msg {
+			display: none;
+			padding-top: 14px;
+			padding-bottom: 4px;
+			font-size: 14px;
+			font-weight: bold;
+			text-align: center;
+		}
+		#list {
+			margin: 12px 0;
+			padding: 0 6px 0 22px;
+			font-size: 14px;
+		}
+		#list > li {
+			margin-bottom: 2px;
+		}
+		a {
+			color: #156ea8;
+			text-decoration: none;
+		}
+		a:hover {
+			text-decoration: underline;
+		}
+	</style>
+	<title>Document</title>
+</head>
+<body>
+	<div id="ar">
+		<button id="save">Save current tabs</button>
+		<button id="clear">Clear saved tabs</button>
+	</div>
+	<div id="msg"></div>
+	<ol id="list"></ol>
+	<script src="index.js"></script>
+</body>
+</html>
