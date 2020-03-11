@@ -74,11 +74,16 @@ openBtn.onclick= ()=>{
 	browser.storage.local.get('savedTabs')
 		.then(({ savedTabs }) => {
 			savedTabs.forEach(({ title, url }) => {
-				pageUrl=url
-				browser.tabs.create({
-					url:pageUrl
-				});
+				openNewTab(url)
 		})})
+}
+
+
+async function openNewTab (tmp){
+	return await browser.tabs.create({
+		url:tmp
+	});
+	
 }
 
 
