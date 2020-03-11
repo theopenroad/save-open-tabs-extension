@@ -1,5 +1,6 @@
 const saveBtn = document.getElementById('save')
 const clearBtn = document.getElementById('clear')
+const openBtn= document.getElementById('open')
 const msg = document.getElementById('msg')
 const list = document.getElementById('list')
 
@@ -36,8 +37,12 @@ const displayList = () => {
 		})
 }
 
+
+
+
+
 saveBtn.onclick = () => {
-	browser.tabs.query({})
+	browser.tabs.query({currentWindow:true})
 		.then(tabs => {
 			let savedTabs = tabs
 				.filter(({ url }) => url.slice(0, 5) !== 'about')
@@ -62,5 +67,19 @@ clearBtn.onclick = () => {
 			print('Cleared!')
 		})
 }
+
+openBtn.onclick= ()=>{
+	
+	list.innerHTML = ''
+	browser.storage.local.get('savedTabs')
+		.then(({ savedTabs }) => {
+			savedTabs.forEach(({ title, url }) => {
+				pageUrl=url
+				browser.tabs.create({
+					url:pageUrl
+				});
+		})})
+}
+
 
 displayList()
