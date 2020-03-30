@@ -8,20 +8,25 @@
 	<title>Save Open Tabs</title>
 </head>
 <body>
-	<div id="grid">
-		<div id="theme-switch">
-			<span id="dark-mode-text">Dark mode</span>
-			<label class="switch">
-				<input id="theme-switch-input" type="checkbox">
-				<span class="slider round"></span>
-			</label>
+	<div id="top-grid">
+		<div id="grid-left">
+			<div id="title">
+				<b>Save Open Tabs</b><span class="v">v1.2.0</span>
+			</div>
+			<div class="dark-mode">
+				<span id="dark-mode-text">Dark mode</span>
+				<label class="switch">
+					<input id="theme-switch-input" type="checkbox">
+					<span class="slider round"></span>
+				</label>
+			</div>
 		</div>
 		<button id="save">Save current tabs</button>
 		<button id="open">Open saved tabs</button>
 		<button id="clear">Clear saved tabs</button>
 	</div>
 	<div id="msg"></div>
-	<ol id="list"></ol>
+	<div id="grid-list"></div>
 	<script src="index.js"></script>
 </body>
 </html>

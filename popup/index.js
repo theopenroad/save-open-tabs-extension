@@ -5,35 +5,67 @@ const clearBtn = document.getElementById('clear')
 const openBtn= document.getElementById('open')
 
 const msg = document.getElementById('msg')
-const list = document.getElementById('list')
+const gridList = document.getElementById('grid-list')
 
 const print = (str, persist) => {
 	msg.innerText = str
 	msg.style.display = 'block'
+
 	if (!persist) {
 		setTimeout(() => {
 			msg.style.display = 'none'
-		}, 1000)
+		}, 900)
 	}
+}
+
+const deleteItem = (url) => {
+	const selected = document.getElementById(url)
+	selected.previousElementSibling.remove()
+	selected.remove()
+
+	browser.storage.local.get('savedTabs')
+		.then(({ savedTabs }) => {
+			browser.storage.local.set({
+				savedTabs: savedTabs.filter((tab) => tab.url !== url)
+			})
+			.then(() => {
+				setTimeout(() => {
+					document.querySelectorAll('#grid-list .index')
+						.forEach((element, i) => {
+							element.innerHTML = `${i + 1}.`
+						})
+				}, 150)
+			})
+		})
 }
 
 const displayList = () => {
 	browser.storage.local.get('savedTabs')
 		.then(({ savedTabs }) => {
-			list.innerHTML = ''
-
-			savedTabs.forEach(({ title, url }) => {
-				const item = document.createElement('li')
+			gridList.innerHTML = ''
+			const arr = []
+			
+			savedTabs.forEach(({ title, url }, i) => {
 				const a = document.createElement('a')
+				a.id = url
 				a.href = url
 				a.title = url
 				
-				const linkText = document.createTextNode(title)
-				a.appendChild(linkText)
+				const index = document.createElement('span')
+				index.innerHTML = `${i + 1}.`
+				index.className = 'index'
 
-				item.appendChild(a)
-				list.append(item)
+				a.append(index)
+				a.append(document.createTextNode(title))
+
+				const deleteButton = document.createElement('button')
+				deleteButton.onclick = () => deleteItem(url)
+				deleteButton.innerText = '✖'
+
+				arr.push(deleteButton, a)
 			})
+
+			gridList.append(...arr)
 		})
 		.catch(err => {
 			console.log({ err })
@@ -63,7 +95,7 @@ saveBtn.onclick = () => {
 clearBtn.onclick = () => {
 	browser.storage.local.remove('savedTabs')
 		.then(() => {
-			list.innerHTML = ''
+			gridList.innerHTML = ''
 			print('Cleared!')
 		})
 }
@@ -85,7 +117,6 @@ openBtn.onclick = () => {
 
 themeSwitch.onchange = (e) => {
 	const isDarkMode = e.target.checked
-
 	browser.storage.local.set({ darkMode: isDarkMode })
 		.then(() => {
 			if (isDarkMode) {
@@ -96,6 +127,7 @@ themeSwitch.onchange = (e) => {
 		})
 }
 
+// Renders the list
 browser.storage.local.get('darkMode')
 	.then(({ darkMode }) => {
 		if (darkMode) {
