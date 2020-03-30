@@ -1,23 +1,27 @@
+const themeSwitch = document.getElementById('theme-switch-input')
+
 const saveBtn = document.getElementById('save')
 const clearBtn = document.getElementById('clear')
 const openBtn= document.getElementById('open')
+
 const msg = document.getElementById('msg')
 const list = document.getElementById('list')
 
 const print = (str, persist) => {
 	msg.innerText = str
 	msg.style.display = 'block'
-	if(!persist) {
+	if (!persist) {
 		setTimeout(() => {
 			msg.style.display = 'none'
-		}, 900)
+		}, 1000)
 	}
 }
 
 const displayList = () => {
-	list.innerHTML = ''
 	browser.storage.local.get('savedTabs')
 		.then(({ savedTabs }) => {
+			list.innerHTML = ''
+
 			savedTabs.forEach(({ title, url }) => {
 				const item = document.createElement('li')
 				const a = document.createElement('a')
@@ -37,14 +41,10 @@ const displayList = () => {
 		})
 }
 
-
-
-
-
 saveBtn.onclick = () => {
-	browser.tabs.query({currentWindow:true})
+	browser.tabs.query({})
 		.then(tabs => {
-			let savedTabs = tabs
+			const savedTabs = tabs
 				.filter(({ url }) => url.slice(0, 5) !== 'about')
 				.map(({ title, url }) => ({ title, url }))
 			
@@ -56,35 +56,51 @@ saveBtn.onclick = () => {
 		})
 		.catch(err => {
 			console.log({ err })
-			print('Error!!!')
+			print('Error!')
 		})
 }
 
 clearBtn.onclick = () => {
-	list.innerHTML = ''
 	browser.storage.local.remove('savedTabs')
 		.then(() => {
+			list.innerHTML = ''
 			print('Cleared!')
 		})
 }
 
-openBtn.onclick= ()=>{
-	
-	list.innerHTML = ''
+openBtn.onclick = () => {
+	async function openNewTab (tmp) {
+		return await browser.tabs.create({
+			url: tmp
+		})
+	}
+
 	browser.storage.local.get('savedTabs')
 		.then(({ savedTabs }) => {
 			savedTabs.forEach(({ title, url }) => {
 				openNewTab(url)
-		})})
+			})
+		})
 }
 
+themeSwitch.onchange = (e) => {
+	const isDarkMode = e.target.checked
 
-async function openNewTab (tmp){
-	return await browser.tabs.create({
-		url:tmp
-	});
-	
+	browser.storage.local.set({ darkMode: isDarkMode })
+		.then(() => {
+			if (isDarkMode) {
+				document.body.classList.add('dark')
+			} else {
+				document.body.classList.remove('dark')
+			}
+		})
 }
 
-
-displayList()
+browser.storage.local.get('darkMode')
+	.then(({ darkMode }) => {
+		if (darkMode) {
+			themeSwitch.checked = true
+			document.body.classList.add('dark')
+		}
+	})
+	.finally(() => displayList())
