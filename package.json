@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:linux": "zip -r -FS ../save-open-tabs-extension.zip * --exclude *.git*"
+    "build:linux": "zip -r -FS ../save-open-tabs-extension.zip * -x \"*.git*\" README.md"
   },
   "keywords": [],
   "author": "Max Tedjojuwono",
