@@ -83,8 +83,14 @@ saveBtn.onclick = () => {
 						.map(({ title, url }) => ({ title, url }))
 					
 					if (Array.isArray(savedTabs)) {
+						const combined = savedTabs
+						newTabs.forEach((newTab) => {
+							if (!savedTabs.some(({ url }) => url === newTab.url)) {
+								combined.push(newTab)
+							}
+						})
 						return browser.storage.local.set({
-							savedTabs: [...savedTabs, ...newTabs],
+							savedTabs: combined,
 						})
 					}
 					return browser.storage.local.set({

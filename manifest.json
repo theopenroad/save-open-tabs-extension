@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Save Open Tabs",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A firefox extension to save all open tabs",
   "icons": {
     "32": "icons/icon32.png",
