@@ -9,14 +9,14 @@ body {
 #top-grid {
   display: grid;
   margin-left: 12px;
-  grid-template-columns: auto 138px;
+  grid-template-columns: auto 140px;
   row-gap: 5px;
 }
 #grid-left {
   grid-row: 1/4;
 }
 #title {
-  margin-top: 8px;
+  margin-top: 6px;
   margin-bottom: 16px;
   font-size: 18px;
 }
@@ -59,10 +59,10 @@ button:hover {
   text-align: center;
 }
 #grid-list {
-  margin-top: 6px;
+  margin-top: 8px;
   margin-bottom: 12px;
   padding-left: 5px;
-  padding-right: 3px;
+  padding-right: 5px;
   display: grid;
   grid-template-columns: 20px 1fr;
   row-gap: 4px;

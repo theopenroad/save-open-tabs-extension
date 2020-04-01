@@ -45,50 +45,61 @@ const displayList = () => {
 			gridList.innerHTML = ''
 			const arr = []
 			
-			savedTabs.forEach(({ title, url }, i) => {
-				const a = document.createElement('a')
-				a.id = url
-				a.href = url
-				a.title = url
-				
-				const index = document.createElement('span')
-				index.innerHTML = `${i + 1}.`
-				index.className = 'index'
+			if (savedTabs) {
+				savedTabs.forEach(({ title, url }, i) => {
+					const a = document.createElement('a')
+					a.id = url
+					a.href = url
+					a.title = url
+					
+					const index = document.createElement('span')
+					index.innerHTML = `${i + 1}.`
+					index.className = 'index'
+	
+					a.append(index)
+					a.append(document.createTextNode(title))
+	
+					const deleteButton = document.createElement('button')
+					deleteButton.onclick = () => deleteItem(url)
+					deleteButton.innerText = '✖'
+	
+					arr.push(deleteButton, a)
+				})
 
-				a.append(index)
-				a.append(document.createTextNode(title))
-
-				const deleteButton = document.createElement('button')
-				deleteButton.onclick = () => deleteItem(url)
-				deleteButton.innerText = '✖'
-
-				arr.push(deleteButton, a)
-			})
-
-			gridList.append(...arr)
-		})
-		.catch(err => {
-			console.log({ err })
-			print('No tabs saved', true)
+				gridList.append(...arr)
+			} else {
+				print('No tabs saved', true)
+			}
 		})
 }
 
 saveBtn.onclick = () => {
-	browser.tabs.query({})
-		.then(tabs => {
-			const savedTabs = tabs
-				.filter(({ url }) => url.slice(0, 5) !== 'about')
-				.map(({ title, url }) => ({ title, url }))
-			
-			return browser.storage.local.set({ savedTabs })
-		})
-		.then(() => {
-			print('Saved!')
-			displayList()
-		})
-		.catch(err => {
-			console.log({ err })
-			print('Error!')
+	browser.storage.local.get('savedTabs')
+		.then(({ savedTabs }) => {
+			browser.tabs.query({})
+				.then((tabs) => {
+					const newTabs = tabs
+						.filter(({ url }) => url.slice(0, 5) !== 'about')
+						.map(({ title, url }) => ({ title, url }))
+					
+					if (Array.isArray(savedTabs)) {
+						return browser.storage.local.set({
+							savedTabs: [...savedTabs, ...newTabs],
+						})
+					}
+					return browser.storage.local.set({
+						savedTabs: newTabs,
+					})
+				})
+				.then(() => {
+					print('Saved!')
+					displayList()
+				})
+				.catch(err => {
+					console.log({ err })
+					print('Error!')
+				})
+
 		})
 }
 
